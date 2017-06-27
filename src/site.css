@@ -1,0 +1,34 @@
+body {
+    margin-top: 20px !important;
+}
+
+span.task-text {
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    vertical-align: baseline;
+    padding-left: 7px;
+    outline: none;
+    font-size: 1.1em;
+    text-align: justify;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+.ui.checkbox {
+    top: 3px;
+}
+
+.ui.checkbox input:checked~.box:after, .ui.checkbox input:checked~label:after {
+    content: '\e800';
+    color: white;
+    opacity: 1;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
