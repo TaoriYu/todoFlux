@@ -3,17 +3,19 @@ import {Dispatcher} from 'flux';
 export enum AppActions {
   ADD_TASK,
   DELETE_TASK,
+  DELETE_CHECKED_TASKS,
   CHECK_TASK,
-  START_EDITING_TASK,
+  CHECK_ALL_TASKS,
+  UNCHECK_ALL_TASKS,
   STOP_EDITING_TASK,
 }
 
 export interface AppPayload {
   eventName: AppActions;
   data: {
-    text?: string,
+    text?:    string,
     checked?: boolean,
-    id: string,
+    id:       string,
   };
 }
 

@@ -1,12 +1,10 @@
-import * as React  from 'react';
-import {List}      from 'semantic-ui-react';
-import {Task}      from './index';
+import  * as React from 'react';
 import {Container} from 'flux/utils';
+import      {Task} from './index';
 import ListItemRow from './ListItemRow';
-import TodoStore   from './TodoStore';
-// import AppDispatcher, {AppActions} from './Dispatcher';
-// import generateID from './generateID';
-// import AppDispatcher, {AppActions} from "./Dispatcher";
+import   TodoStore from './TodoStore';
+
+import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 interface ListBodyStates {
   tasks: Array<Task>;
@@ -33,7 +31,17 @@ export class ListBody extends React.PureComponent<{}, ListBodyStates> {
 
   render() {
     return(
-      <List>
+      <ReactCSSTransitionGroup
+        transitionName={{
+          enter: 'in',
+          leave: 'out'
+        }}
+        transitionEnterTimeout={450}
+        transitionLeaveTimeout={450}
+        component="div"
+        role="list"
+        className={`ui list animating transition slide`}
+      >
         {this.state.tasks.map((task) => {
           return(
             <ListItemRow
@@ -42,7 +50,7 @@ export class ListBody extends React.PureComponent<{}, ListBodyStates> {
             />
           );
         })}
-      </List>
+      </ReactCSSTransitionGroup>
     );
   }
 }

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
+import         *    as React from 'react';
+import         * as ReactDOM from 'react-dom';
+import                   App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 // import styles
@@ -57,10 +57,9 @@ import './semantic/dist/components/tab.css';
 import './semantic/dist/components/transition.css';
 
 export interface Task {
-  text?: string;
-  checked?: boolean;
-  id: string;
-  isEditMode?: boolean;
+  id:          string;
+  text?:       string;
+  checked?:    boolean;
 }
 
 ReactDOM.render(

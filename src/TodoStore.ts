@@ -1,12 +1,11 @@
-import * as FluxReduceStore from 'flux/lib/FluxReduceStore';
-import {AppActions, default as AppDispatcher, AppPayload} from './Dispatcher';
-import generateID from './generateID';
+import                    * as FluxReduceStore from 'flux/lib/FluxReduceStore';
+import                              generateID from './generateID';
+import AppDispatcher, {AppActions, AppPayload} from './Dispatcher';
 
 export interface TodoStoreState {
-  text?: string;
-  checked?: boolean;
-  id: string;
-  isEditMode?: boolean;
+  text?:       string;
+  checked?:    boolean;
+  id:          string;
 }
 
 export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, AppPayload> {
@@ -21,9 +20,9 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
 
   getInitialState(): Array<TodoStoreState> {
     return [
-      {text: 'First task', checked: false, id: generateID(), isEditMode: false},
-      {text: 'Do smth useful', checked: false, id: generateID(), isEditMode: false},
-      {text: 'Frustrate maybe', checked: false, id: generateID(), isEditMode: false}
+      {text: 'First task', checked: false, id: generateID()},
+      {text: 'Do smth useful', checked: false, id: generateID()},
+      {text: 'Frustrate maybe', checked: false, id: generateID()}
     ];
   }
 
@@ -35,28 +34,36 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
       case AppActions.DELETE_TASK:
         return state.filter((task: TodoStoreState) => task.id !== data.id);
 
+      case AppActions.DELETE_CHECKED_TASKS:
+        return state.filter((task) => !task.checked);
+
       case AppActions.CHECK_TASK:
         return state.map((task) => {
           if (task.id === data.id) {
-            return {text: task.text, checked: !task.checked, id: task.id, isEditMode: false};
+            return {text: task.text, checked: !task.checked, id: task.id};
           } else {
             return task;
           }
         });
 
-      case AppActions.START_EDITING_TASK:
+      case AppActions.CHECK_ALL_TASKS:
         return state.map((task) => {
-          if (task.id === data.id) {
-            return {text: task.text, checked: task.checked, id: task.id, isEditMode: true};
-          } else {
+          if (task.checked) {
             return task;
+          } else {
+            return {text: task.text, checked: true, id: task.id};
           }
+        });
+
+      case AppActions.UNCHECK_ALL_TASKS:
+        return state.map((task) => {
+          return {text: task.text, checked: false, id: task.id};
         });
 
       case AppActions.STOP_EDITING_TASK:
         return state.map((task) => {
           if (task.id === data.id) {
-            return {text: data.text, checked: task.checked, id: task.id, isEfitMode: false};
+            return {text: data.text, checked: task.checked, id: task.id};
           } else {
             return task;
           }

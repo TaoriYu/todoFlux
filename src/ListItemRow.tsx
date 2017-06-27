@@ -1,41 +1,87 @@
-import * as React from 'react';
-import {List} from 'semantic-ui-react';
-import {Task} from './index';
-import TaskShowMode from './TaskShowMode';
-import TaskEditMode from './TaskEditMode';
+import                  * as React from 'react';
+import                      {List} from 'semantic-ui-react';
+import                      {Task} from './index';
+import                TaskShowMode from './TaskShowMode';
+import                TaskEditMode from './TaskEditMode';
+import AppDispatcher, {AppActions} from './Dispatcher';
+
+import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 export interface ListItemRowProps {
   key: string;
   task: Task;
 }
-interface ListItemRowState {}
+interface ListItemRowState {
+  isEditMode: boolean;
+  taskValue?: string;
+}
 
 export default class ListItemRow extends React.PureComponent<ListItemRowProps, ListItemRowState> {
   constructor(props: ListItemRowProps) {
     super(props);
+
+    this.state = {
+      isEditMode: false,
+      taskValue: this.props.task.text,
+    };
+
+    this.UniversalTask   = this.UniversalTask.bind(this);
+    this.startEditing    = this.startEditing.bind(this);
+    this.stopEditingTask = this.stopEditingTask.bind(this);
+  }
+
+  UniversalTask() {
+    const task = this.props.task;
+
+    return this.state.isEditMode ?
+      <TaskEditMode
+        task={task}
+        taskValue={this.state.taskValue}
+        changeTaskText={(e: React.SyntheticEvent<HTMLInputElement>) => {
+          this.setState({taskValue: e.currentTarget.value});
+        }}
+        stopEditingTask={(e: React.SyntheticEvent<HTMLInputElement>) => this.stopEditingTask(e, task.id)}
+      /> :
+      <TaskShowMode
+        task={task}
+        startEditing={() => this.startEditing(task.id)}
+      />;
+  }
+
+  startEditing(id: string) {
+    this.setState({isEditMode: true});
+  }
+
+  stopEditingTask(e: React.SyntheticEvent<HTMLInputElement>, id: string): void {
+    e.preventDefault();
+    this.setState({isEditMode: false});
+    AppDispatcher.getInstance().dispatch({
+      eventName: AppActions.STOP_EDITING_TASK,
+      data: {
+        id: id,
+        text: this.state.taskValue,
+      }
+    });
   }
 
   render() {
-    // диструкция блэдт где
-    let taskView;
-    if (this.props.task.isEditMode) {
-      taskView =
-        <TaskEditMode
-          key={this.props.task.id}
-          task={this.props.task}
-        />;
-    } else {
-      taskView =
-        <TaskShowMode
-          key={this.props.task.id}
-          task={this.props.task}
-        />;
-    }
-
     return(
-      <List.Item>
-        {taskView}
-      </List.Item>
+      <ReactCSSTransitionGroup
+        transitionName={{
+          enter: 'in',
+          leave: 'out'
+        }}
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+        component="div"
+        role="listitem"
+        className="item animating transition slide down"
+        key={this.props.key}
+      >
+        <List.Item>
+          <this.UniversalTask key={this.props.key}/>
+        </List.Item>
+      </ReactCSSTransitionGroup>
     );
   }
 }

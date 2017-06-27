@@ -1,13 +1,11 @@
-import * as React from 'react';
-import {Task} from './index';
-import {Checkbox} from 'semantic-ui-react';
-import {Button, List} from 'semantic-ui-react';
-import {Icon} from 'semantic-ui-react';
-import AppDispatcher, {AppActions} from './Dispatcher';
+import                     * as React from 'react';
+import {Checkbox, Button, Icon, List} from 'semantic-ui-react';
+import                         {Task} from './index';
+import    AppDispatcher, {AppActions} from './Dispatcher';
 
 interface TaskShowModeProps {
-  key: string;
   task: Task;
+  startEditing: () => void;
 }
 interface TaskShowModeStates {}
 
@@ -16,9 +14,8 @@ export default class TaskShowMode extends React.PureComponent<TaskShowModeProps,
   constructor(props: TaskShowModeProps){
     super(props);
 
-    this.deleteTask   = this.deleteTask.bind(this);
-    this.checkTask    = this.checkTask.bind(this);
-    this.startEditing = this.startEditing.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+    this.checkTask  = this.checkTask.bind(this);
   }
 
   deleteTask(id: string): void {
@@ -39,26 +36,20 @@ export default class TaskShowMode extends React.PureComponent<TaskShowModeProps,
     });
   }
 
-  startEditing(id: string): void {
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.START_EDITING_TASK,
-      data: {
-        id: id,
-      }
-    });
-  }
-
   render() {
+    let {id, text, checked} = this.props.task;
+
     return(
-      <List.Content verticalAlign="middle">
+      <List.Content className="flex-container">
         <Checkbox
-          onChange={() => this.checkTask(this.props.task.id)}
+          onChange={() => this.checkTask(id)}
+          checked={checked}
         />
         <span
-          className={`task-text ${this.props.task.checked && 'line-through'}`}
-          onDoubleClick={() => this.startEditing(this.props.task.id)}
+          className={`task-text ${checked && 'line-through'}`}
+          onDoubleClick={this.props.startEditing}
         >
-          {this.props.task.text}
+          {text}
         </span>
         <Button
           icon
@@ -66,7 +57,7 @@ export default class TaskShowMode extends React.PureComponent<TaskShowModeProps,
           color="red"
           size="mini"
           floated="right"
-          onClick={() => this.deleteTask(this.props.task.id)}
+          onClick={() => this.deleteTask(id)}
         >
           <Icon name="delete"/>
         </Button>

@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {Form} from 'semantic-ui-react';
-import {Input} from 'semantic-ui-react';
+import                  * as React from 'react';
+import               {Form, Input} from 'semantic-ui-react';
+import                  generateID from './generateID';
 import AppDispatcher, {AppActions} from './Dispatcher';
-import generateID from './generateID';
 
 interface ListHeadProps {}
 interface ListHeadState {
@@ -22,14 +21,16 @@ export default class ListHeader extends React.PureComponent<ListHeadProps, ListH
 
   createTask(e: React.SyntheticEvent<HTMLFormElement>): void {
     e.preventDefault();
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.ADD_TASK,
-      data: {
-        text: this.state.taskValue,
-        checked: false,
-        id: generateID(),
-      }
-    });
+    if (this.state.taskValue.length > 0) {
+      AppDispatcher.getInstance().dispatch({
+        eventName: AppActions.ADD_TASK,
+        data: {
+          text: this.state.taskValue,
+          checked: false,
+          id: generateID(),
+        }
+      });
+    }
 
     this.setState({taskValue: ''});
   }
