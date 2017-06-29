@@ -1,7 +1,7 @@
 import                     * as React from 'react';
 import {Checkbox, Button, Icon, List} from 'semantic-ui-react';
 import                         {Task} from './index';
-import    AppDispatcher, {AppActions} from './Dispatcher';
+import    AppDispatcher, {AppActions} from './AppDispatcher';
 
 interface TaskShowModeProps {
   task: Task;

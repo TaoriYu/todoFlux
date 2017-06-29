@@ -1,6 +1,6 @@
 import                    * as FluxReduceStore from 'flux/lib/FluxReduceStore';
 import                              generateID from './generateID';
-import AppDispatcher, {AppActions, AppPayload} from './Dispatcher';
+import AppDispatcher, {AppActions, AppPayload} from './AppDispatcher';
 
 export interface TodoStoreState {
   text?:       string;
@@ -38,9 +38,12 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
         return state.filter((task) => !task.checked);
 
       case AppActions.CHECK_TASK:
+
         return state.map((task) => {
-          if (task.id === data.id) {
-            return {text: task.text, checked: !task.checked, id: task.id};
+          let {text, checked, id} = task;
+
+          if (id === data.id) {
+            return {text, checked: !checked, id};
           } else {
             return task;
           }
@@ -48,22 +51,27 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
 
       case AppActions.CHECK_ALL_TASKS:
         return state.map((task) => {
-          if (task.checked) {
+          let {text, checked, id} = task;
+
+          if (checked) {
             return task;
           } else {
-            return {text: task.text, checked: true, id: task.id};
+            return {text, checked: true, id};
           }
         });
 
       case AppActions.UNCHECK_ALL_TASKS:
         return state.map((task) => {
-          return {text: task.text, checked: false, id: task.id};
+          let {text, id} = task;
+          return {text, checked: false, id};
         });
 
       case AppActions.STOP_EDITING_TASK:
         return state.map((task) => {
-          if (task.id === data.id) {
-            return {text: data.text, checked: task.checked, id: task.id};
+          let {checked, id} = task;
+
+          if (id === data.id) {
+            return {text: data.text, checked, id};
           } else {
             return task;
           }

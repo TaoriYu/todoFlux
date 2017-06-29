@@ -3,7 +3,7 @@ import                      {List} from 'semantic-ui-react';
 import                      {Task} from './index';
 import                TaskShowMode from './TaskShowMode';
 import                TaskEditMode from './TaskEditMode';
-import AppDispatcher, {AppActions} from './Dispatcher';
+import AppDispatcher, {AppActions} from './AppDispatcher';
 
 import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
@@ -44,11 +44,11 @@ export default class ListItemRow extends React.PureComponent<ListItemRowProps, L
       /> :
       <TaskShowMode
         task={task}
-        startEditing={() => this.startEditing(task.id)}
+        startEditing={() => this.startEditing()}
       />;
   }
 
-  startEditing(id: string) {
+  startEditing() {
     this.setState({isEditMode: true});
   }
 

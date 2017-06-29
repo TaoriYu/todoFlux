@@ -1,7 +1,7 @@
 import                  * as React from 'react';
 import               {Form, Input} from 'semantic-ui-react';
 import                  generateID from './generateID';
-import AppDispatcher, {AppActions} from './Dispatcher';
+import AppDispatcher, {AppActions} from './AppDispatcher';
 
 interface ListHeadProps {}
 interface ListHeadState {

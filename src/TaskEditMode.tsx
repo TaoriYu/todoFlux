@@ -11,8 +11,14 @@ interface TaskEditModeProps {
 interface TaskEditModeStates {}
 
 export default class TaskEditMode extends React.PureComponent<TaskEditModeProps, TaskEditModeStates> {
+  private textInput: HTMLInputElement;
+
   constructor(props: TaskEditModeProps) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.textInput.focus();
   }
 
   render() {
@@ -24,6 +30,7 @@ export default class TaskEditMode extends React.PureComponent<TaskEditModeProps,
           <Input
             value={this.props.taskValue}
             onChange={this.props.changeTaskText}
+            ref={(ref: HTMLInputElement) => this.textInput = ref}
           />
         </Form.Field>
       </Form>

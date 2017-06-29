@@ -1,7 +1,7 @@
 import                  * as React from 'react';
 import                    {Header} from 'semantic-ui-react';
 import                    {Button} from 'semantic-ui-react';
-import AppDispatcher, {AppActions} from './Dispatcher';
+import AppDispatcher, {AppActions} from './AppDispatcher';
 
 interface ListFooterProps {}
 interface ListFooterState {
