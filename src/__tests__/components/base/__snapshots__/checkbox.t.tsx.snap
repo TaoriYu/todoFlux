@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox component basic snapshot render 1`] = `
+<div>
+  <div
+    className="ui fitted checkbox"
+    onChange={[Function]}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+  >
+    <input
+      checked={false}
+      className="hidden"
+      name={undefined}
+      readOnly={true}
+      tabIndex={0}
+      type="checkbox"
+      value={undefined}
+    />
+    <label />
+  </div>
+  <div
+    className="ui checkbox"
+    onChange={[Function]}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+  >
+    <input
+      checked={false}
+      className="hidden"
+      name={undefined}
+      readOnly={true}
+      tabIndex={0}
+      type="checkbox"
+      value={undefined}
+    />
+    <label>
+      So look into my eyes and see the bull's eye and the crack
+    </label>
+  </div>
+</div>
+`;

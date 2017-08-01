@@ -38,7 +38,6 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
         return state.filter((task) => !task.checked);
 
       case AppActions.CHECK_TASK:
-
         return state.map((task) => {
           let {text, checked, id} = task;
 

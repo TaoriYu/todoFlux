@@ -3,7 +3,6 @@ import {Container} from 'flux/utils';
 import      {Task} from './index';
 import ListItemRow from './ListItemRow';
 import   TodoStore from './TodoStore';
-
 import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 interface ListBodyStates {

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts-ts": "2.2.0"
+    "@types/react-test-renderer": "^15.5.1",
+    "enzyme": "^2.9.1",
+    "react-scripts-ts": "2.2.0",
+    "react-test-renderer": "^15.5.4"
   },
   "dependencies": {
     "@types/flux": "^3.1.0",

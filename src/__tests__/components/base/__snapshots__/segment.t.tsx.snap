@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Segment component basic segment snapshot 1`] = `
+<div
+  className="ui segment"
+>
+  I'm full well aware
+</div>
+`;
