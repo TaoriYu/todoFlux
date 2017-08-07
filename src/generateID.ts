@@ -1,3 +1,3 @@
 export default function generateID(): string {
-  return(Math.random().toString().substr(2, 14));
+  return(new Date().valueOf().toString());
 }

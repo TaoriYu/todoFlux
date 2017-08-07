@@ -1,9 +1,9 @@
-import    * as React from 'react';
-import        {Task} from './index';
+import * as React from 'react';
 import {Form, Input} from 'semantic-ui-react';
+import {ITask} from './types/tasks';
 
 interface TaskEditModeProps {
-  task: Task;
+  task: ITask;
   taskValue?: string;
   changeTaskText: (e: React.SyntheticEvent<HTMLInputElement>) => void;
   stopEditingTask: (e: React.SyntheticEvent<HTMLInputElement>, id: string) => void;

@@ -1,25 +1,26 @@
 import {Dispatcher} from 'flux';
+import {DispatcherPayload} from './types/tasks';
 
-export enum AppActions {
-  ADD_TASK,
-  DELETE_TASK,
-  DELETE_CHECKED_TASKS,
-  CHECK_TASK,
-  CHECK_ALL_TASKS,
-  UNCHECK_ALL_TASKS,
-  STOP_EDITING_TASK,
-}
+// export enum AppActions {
+//   ADD_TASK,
+//   DELETE_TASK,
+//   DELETE_CHECKED_TASKS,
+//   CHECK_TASK,
+//   CHECK_ALL_TASKS,
+//   UNCHECK_ALL_TASKS,
+//   STOP_EDITING_TASK,
+// }
+//
+// export interface AppPayload {
+//   eventName: AppActions;
+//   data: {
+//     text?:    string,
+//     checked?: boolean,
+//     id:       string,
+//   };
+// }
 
-export interface AppPayload {
-  eventName: AppActions;
-  data: {
-    text?:    string,
-    checked?: boolean,
-    id:       string,
-  };
-}
-
-export default class AppDispatcher extends Dispatcher<AppPayload> {
+export default class AppDispatcher extends Dispatcher<DispatcherPayload> {
   static _instance: AppDispatcher;
 
   static getInstance() {

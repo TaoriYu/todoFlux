@@ -1,10 +1,10 @@
-import                     * as React from 'react';
+import * as React from 'react';
 import {Checkbox, Button, Icon, List} from 'semantic-ui-react';
-import                         {Task} from './index';
-import    AppDispatcher, {AppActions} from './AppDispatcher';
+import {ITask} from './types/tasks';
+import {default as TasksActionFactory} from './actions/TasksActionFactory';
 
 interface TaskShowModeProps {
-  task: Task;
+  task: ITask;
   startEditing: () => void;
 }
 interface TaskShowModeStates {}
@@ -19,21 +19,11 @@ export default class TaskShowMode extends React.PureComponent<TaskShowModeProps,
   }
 
   deleteTask(id: string): void {
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.DELETE_TASK,
-      data: {
-        id: id,
-      }
-    });
+    TasksActionFactory.deleteTask({id: id});
   }
 
-  checkTask(id: string): void {
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.CHECK_TASK,
-      data: {
-        id: id,
-      }
-    });
+  checkTask(task: ITask): void {
+    TasksActionFactory.checkTask(task);
   }
 
   render() {
@@ -42,7 +32,7 @@ export default class TaskShowMode extends React.PureComponent<TaskShowModeProps,
     return(
       <List.Content className="flex-container">
         <Checkbox
-          onChange={() => this.checkTask(id)}
+          onChange={() => this.checkTask(this.props.task)}
           checked={checked}
         />
         <span

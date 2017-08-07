@@ -1,7 +1,7 @@
-import                  * as React from 'react';
-import                    {Header} from 'semantic-ui-react';
-import                    {Button} from 'semantic-ui-react';
-import AppDispatcher, {AppActions} from './AppDispatcher';
+import * as React from 'react';
+import {Header} from 'semantic-ui-react';
+import {Button} from 'semantic-ui-react';
+import {default as TasksActionFactory} from './actions/TasksActionFactory';
 
 interface ListFooterProps {}
 interface ListFooterState {
@@ -24,35 +24,17 @@ export default class ListFooter extends React.PureComponent<ListFooterProps, Lis
 
   checkAllTasks(): void {
     this.setState({allChecked: true});
-
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.CHECK_ALL_TASKS,
-      data: {
-        id: '',
-      }
-    });
+    TasksActionFactory.checkAllTasks();
   }
 
   uncheckAllTasks(): void {
     this.setState({allChecked: false});
-
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.UNCHECK_ALL_TASKS,
-      data: {
-        id: '',
-      }
-    });
+    TasksActionFactory.uncheckAllTasks();
   }
 
   deleteChecked(): void {
     this.setState({allChecked: false});
-
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.DELETE_CHECKED_TASKS,
-      data: {
-        id: '',
-      }
-    });
+    TasksActionFactory.deleteCheckedTask();
   }
 
   render() {

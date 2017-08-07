@@ -1,43 +1,49 @@
-import                    * as FluxReduceStore from 'flux/lib/FluxReduceStore';
-import                              generateID from './generateID';
-import AppDispatcher, {AppActions, AppPayload} from './AppDispatcher';
+import * as FluxReduceStore from 'flux/lib/FluxReduceStore';
+import * as Flux from 'flux';
+import AppDispatcher from './AppDispatcher';
+import AccessorIDB from './api/AccessorIDB';
+import {DispatcherPayload} from './types/tasks';
+import {default as TasksActionFactory, TasksActions} from './actions/TasksActionFactory';
 
-export interface TodoStoreState {
-  text?:       string;
-  checked?:    boolean;
-  id:          string;
+interface TodoStoreState {
+  id:       string;
+  text?:    string;
+  checked?: boolean;
 }
 
-export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, AppPayload> {
+export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, DispatcherPayload> {
   static _instance: TodoStore;
 
   static getInstance(): TodoStore {
     if (!TodoStore._instance) {
+      window['idb'] = AccessorIDB.getInstance();
+      TasksActionFactory.getTasks();
       TodoStore._instance = new TodoStore(AppDispatcher.getInstance());
     }
+
     return TodoStore._instance;
   }
 
-  getInitialState(): Array<TodoStoreState> {
-    return [
-      {text: 'First task', checked: false, id: generateID()},
-      {text: 'Do smth useful', checked: false, id: generateID()},
-      {text: 'Frustrate maybe', checked: false, id: generateID()}
-    ];
+  constructor(dispatcher: Flux.Dispatcher<DispatcherPayload>) {
+    super(dispatcher);
   }
 
-  reduce(state: Array<TodoStoreState>, {data, eventName}: AppPayload) {
-    switch (eventName) {
-      case AppActions.ADD_TASK:
+  getInitialState(): Array<TodoStoreState> {
+    return [];
+  }
+
+  reduce(state: Array<TodoStoreState>, {data, action}: DispatcherPayload): Array<TodoStoreState> {
+    switch (action) {
+      case TasksActions.addTask:
         return state.concat(data);
 
-      case AppActions.DELETE_TASK:
+      case TasksActions.deleteTask:
         return state.filter((task: TodoStoreState) => task.id !== data.id);
 
-      case AppActions.DELETE_CHECKED_TASKS:
+      case TasksActions.deleteCheckedTask:
         return state.filter((task) => !task.checked);
 
-      case AppActions.CHECK_TASK:
+      case TasksActions.checkTask:
         return state.map((task) => {
           let {text, checked, id} = task;
 
@@ -48,7 +54,7 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
           }
         });
 
-      case AppActions.CHECK_ALL_TASKS:
+      case TasksActions.checkAllTasks:
         return state.map((task) => {
           let {text, checked, id} = task;
 
@@ -59,13 +65,13 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Ap
           }
         });
 
-      case AppActions.UNCHECK_ALL_TASKS:
+      case TasksActions.unckeckAllTasks:
         return state.map((task) => {
           let {text, id} = task;
           return {text, checked: false, id};
         });
 
-      case AppActions.STOP_EDITING_TASK:
+      case TasksActions.stopEditingTasks:
         return state.map((task) => {
           let {checked, id} = task;
 

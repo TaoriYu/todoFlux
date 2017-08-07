@@ -1,7 +1,7 @@
-import                  * as React from 'react';
-import               {Form, Input} from 'semantic-ui-react';
-import                  generateID from './generateID';
-import AppDispatcher, {AppActions} from './AppDispatcher';
+import * as React from 'react';
+import {Form, Input} from 'semantic-ui-react';
+import TasksActionFactory from './actions/TasksActionFactory';
+import generateID from './generateID';
 
 interface ListHeadProps {}
 interface ListHeadState {
@@ -9,6 +9,9 @@ interface ListHeadState {
 }
 
 export default class ListHeader extends React.PureComponent<ListHeadProps, ListHeadState> {
+
+  private actions = TasksActionFactory;
+
   constructor(props: ListHeadProps) {
     super(props);
 
@@ -22,13 +25,10 @@ export default class ListHeader extends React.PureComponent<ListHeadProps, ListH
   createTask(e: React.SyntheticEvent<HTMLFormElement>): void {
     e.preventDefault();
     if (this.state.taskValue.length > 0) {
-      AppDispatcher.getInstance().dispatch({
-        eventName: AppActions.ADD_TASK,
-        data: {
-          text: this.state.taskValue,
-          checked: false,
-          id: generateID(),
-        }
+      this.actions.addTask({
+        id: generateID(),
+        text: this.state.taskValue,
+        checked: false,
       });
     }
 

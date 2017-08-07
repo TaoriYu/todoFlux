@@ -1,12 +1,12 @@
 import  * as React from 'react';
 import {Container} from 'flux/utils';
-import      {Task} from './index';
 import ListItemRow from './ListItemRow';
-import   TodoStore from './TodoStore';
+import TodoStore from './TodoStore';
 import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import {ITask} from './types/tasks';
 
 interface ListBodyStates {
-  tasks: Array<Task>;
+  tasks: Array<ITask>;
 }
 
 export class ListBody extends React.PureComponent<{}, ListBodyStates> {

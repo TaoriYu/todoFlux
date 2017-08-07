@@ -1,15 +1,14 @@
-import                  * as React from 'react';
-import                      {List} from 'semantic-ui-react';
-import                      {Task} from './index';
-import                TaskShowMode from './TaskShowMode';
-import                TaskEditMode from './TaskEditMode';
-import AppDispatcher, {AppActions} from './AppDispatcher';
-
+import * as React from 'react';
+import {List} from 'semantic-ui-react';
+import TaskShowMode from './TaskShowMode';
+import TaskEditMode from './TaskEditMode';
+import TasksActionFactory from './actions/TasksActionFactory';
+import {ITask} from './types/tasks';
 import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 export interface ListItemRowProps {
   key: string;
-  task: Task;
+  task: ITask;
 }
 interface ListItemRowState {
   isEditMode: boolean;
@@ -55,13 +54,7 @@ export default class ListItemRow extends React.PureComponent<ListItemRowProps, L
   stopEditingTask(e: React.SyntheticEvent<HTMLInputElement>, id: string): void {
     e.preventDefault();
     this.setState({isEditMode: false});
-    AppDispatcher.getInstance().dispatch({
-      eventName: AppActions.STOP_EDITING_TASK,
-      data: {
-        id: id,
-        text: this.state.taskValue,
-      }
-    });
+    TasksActionFactory.stopEditingTasks({id: id, text: this.state.taskValue});
   }
 
   render() {
