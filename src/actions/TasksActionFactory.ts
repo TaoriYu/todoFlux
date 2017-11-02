@@ -1,4 +1,4 @@
-import AppDispatcher from '../AppDispatcher';
+import AppDispatcher from '../dispatchers/AppDispatcher';
 import {ITask} from '../types/tasks';
 import AccessorIDB from '../api/AccessorIDB';
 
@@ -10,6 +10,7 @@ export const enum TasksActions {
   checkAllTasks     = 1 << 4,
   unckeckAllTasks   = 1 << 5,
   stopEditingTasks  = 1 << 6,
+  getTasks          = 1 << 7,
 }
 
 export default class TasksActionFactory {

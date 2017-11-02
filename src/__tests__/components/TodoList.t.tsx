@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import {ListBody} from '../../ListBody';
+import {ListBody} from '../../components/ListBody';
 
 describe('ListBody', () => {
   test('renders with three initial tasks', () => {
