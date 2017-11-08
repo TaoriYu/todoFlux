@@ -1,4 +1,4 @@
-import {TasksActions} from '../actions/TasksActionFactory';
+import { ETasksActions } from '../actions/TasksActionFactory';
 
 export interface ITask {
   id:       string;
@@ -7,7 +7,7 @@ export interface ITask {
 }
 
 export interface IDispatcherPayload {
-  action: TasksActions;
+  action: ETasksActions;
   data: {
     id:       string,
     text?:    string,

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import {ListBody} from '../../components/ListBody';
+import {Body} from '../../components/List/Body';
 
-describe('ListBody', () => {
+describe('Body', () => {
   test('renders with three initial tasks', () => {
-    let header = shallow(<ListBody/>);
+    let header = shallow(<Body/>);
     expect(header.state().tasks.length).toEqual(3);
   });
 });

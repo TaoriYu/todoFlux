@@ -1,9 +1,7 @@
-import * as FluxReduceStore from 'flux/lib/FluxReduceStore';
-import * as Flux from 'flux';
-import AppDispatcher from '../dispatchers/AppDispatcher';
-// import AccessorIDB from './api/AccessorIDB';
-import {IDispatcherPayload, ITask} from '../types/tasks';
-import {default as TasksActionFactory, TasksActions} from '../actions/TasksActionFactory';
+import * as FluxReduceStore          from 'flux/lib/FluxReduceStore';
+import { IDispatcherPayload, ITask } from '../types/tasks';
+import { ETasksActions }             from '../actions/TasksActionFactory';
+import AppDispatcher                 from '../dispatchers/AppDispatcher';
 
 interface ITodoStoreState {
   id:       string;
@@ -11,22 +9,7 @@ interface ITodoStoreState {
   checked?: boolean;
 }
 
-export default class TodoStore extends FluxReduceStore<Array<ITodoStoreState>, IDispatcherPayload> {
-  static _instance: TodoStore;
-
-  static getInstance(): TodoStore {
-    if (!TodoStore._instance) {
-      // window['idb'] = AccessorIDB.getInstance();
-      TasksActionFactory.getTasks();
-      TodoStore._instance = new TodoStore(AppDispatcher.getInstance());
-    }
-
-    return TodoStore._instance;
-  }
-
-  constructor(dispatcher: Flux.Dispatcher<IDispatcherPayload>) {
-    super(dispatcher);
-  }
+class TodoStore extends FluxReduceStore<Array<ITodoStoreState>, IDispatcherPayload> {
 
   getInitialState(): Array<ITodoStoreState> {
     return [];
@@ -34,25 +17,25 @@ export default class TodoStore extends FluxReduceStore<Array<ITodoStoreState>, I
 
   reduce(state: Array<ITodoStoreState>, {data, action}: IDispatcherPayload): Array<ITodoStoreState> {
     switch (action) {
-      case TasksActions.addTask:
+      case ETasksActions.addTask:
         return state.concat(data);
 
-      case TasksActions.deleteTask:
+      case ETasksActions.deleteTask:
         return this.deleteTask(data);
 
-      case TasksActions.deleteCheckedTask:
+      case ETasksActions.deleteCheckedTask:
         return this.deleteCheckedTask();
 
-      case TasksActions.checkTask:
+      case ETasksActions.checkTask:
         return this.checkTask(data);
 
-      case TasksActions.checkAllTasks:
+      case ETasksActions.checkAllTasks:
         return this.checkAllTasks();
 
-      case TasksActions.unckeckAllTasks:
+      case ETasksActions.uncheckAllTasks:
         return this.unckeckAllTasks();
 
-      case TasksActions.stopEditingTasks:
+      case ETasksActions.stopEditingTasks:
         return this.stopEditingTasks(data);
 
       default:
@@ -96,3 +79,5 @@ export default class TodoStore extends FluxReduceStore<Array<ITodoStoreState>, I
     });
   }
 }
+
+export default new TodoStore(AppDispatcher.getInstance());
