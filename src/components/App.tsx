@@ -1,24 +1,55 @@
-import * as React from 'react';
-import {Container, Segment} from 'semantic-ui-react';
-import ListHeader from './ListHeader';
-import ListBody from './ListBody';
-import ListFooter from './ListFooter';
+import * as React             from 'react';
+import * as List              from './List';
+import {
+  Container,
+  Segment,
+  Dimmer,
+  Loader
+}                             from 'semantic-ui-react';
+import TasksActions           from '../actions/TasksActionFactory';
+import AccessorIDB            from '../api/AccessorIDB';
 
 interface IAppProps {}
-interface IAppStates {}
+interface IAppStates {
+  loading: boolean;
+}
 
 class App extends React.PureComponent<IAppProps, IAppStates> {
-  render() {
-    return (
-      <Container text>
-        <Segment piled>
-          <ListHeader/>
-          <ListBody />
-          <ListFooter/>
-        </Segment>
-      </Container>
+  state: IAppStates = {
+    loading: true
+  };
+
+  componentDidMount() {
+    AccessorIDB.open().then(() =>
+      TasksActions.getTasks(() =>
+        this.setState({loading: false})
+      )
     );
+  }
+
+  render() {
+    const Component = this.state.loading ? AppLoader : Main;
+    return <Component/>;
   }
 }
 
+function AppLoader() {
+  return (
+    <Dimmer active page>
+      <Loader/>
+    </Dimmer>
+  );
+}
+
+function Main() {
+  return (
+    <Container text>
+      <Segment piled>
+        <List.Header/>
+        <List.BodyContainer />
+        <List.Footer/>
+      </Segment>
+    </Container>
+  );
+}
 export default App;
