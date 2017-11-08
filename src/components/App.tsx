@@ -4,10 +4,10 @@ import ListHeader from './ListHeader';
 import ListBody from './ListBody';
 import ListFooter from './ListFooter';
 
-interface AppProps {}
-interface AppStates {}
+interface IAppProps {}
+interface IAppStates {}
 
-class App extends React.PureComponent<AppProps, AppStates> {
+class App extends React.PureComponent<IAppProps, IAppStates> {
   render() {
     return (
       <Container text>

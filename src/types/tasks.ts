@@ -6,7 +6,7 @@ export interface ITask {
   checked?: boolean;
 }
 
-export interface DispatcherPayload {
+export interface IDispatcherPayload {
   action: TasksActions;
   data: {
     id:       string,
@@ -14,4 +14,3 @@ export interface DispatcherPayload {
     checked?: boolean,
   };
 }
-

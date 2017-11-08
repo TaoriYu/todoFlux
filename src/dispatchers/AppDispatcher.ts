@@ -1,7 +1,7 @@
 import {Dispatcher} from 'flux';
-import {DispatcherPayload} from '../types/tasks';
+import {IDispatcherPayload} from '../types/tasks';
 
-export default class AppDispatcher extends Dispatcher<DispatcherPayload> {
+export default class AppDispatcher extends Dispatcher<IDispatcherPayload> {
   static _instance: AppDispatcher;
 
   static getInstance() {

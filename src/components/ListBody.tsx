@@ -2,19 +2,23 @@ import  * as React from 'react';
 import {Container} from 'flux/utils';
 import ListItemRow from './ListItemRow';
 import TodoStore from '../stores/TodoStore';
-import ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 import {ITask} from '../types/tasks';
+import List from 'semantic-ui-react/dist/commonjs/elements/List/List';
 
-interface ListBodyStates {
+interface IListBodyProps {
+}
+
+interface IListBodyStates {
   tasks: Array<ITask>;
 }
 
-export class ListBody extends React.PureComponent<{}, ListBodyStates> {
+export class ListBody extends React.PureComponent<IListBodyProps, IListBodyStates> {
+
   static getStores() {
     return [TodoStore.getInstance()];
   }
 
-  static calculateState(): ListBodyStates {
+  static calculateState(): IListBodyStates {
     return {
       tasks: TodoStore.getInstance().getState(),
     };
@@ -30,26 +34,9 @@ export class ListBody extends React.PureComponent<{}, ListBodyStates> {
 
   render() {
     return(
-      <ReactCSSTransitionGroup
-        transitionName={{
-          enter: 'in',
-          leave: 'out'
-        }}
-        transitionEnterTimeout={450}
-        transitionLeaveTimeout={450}
-        component="div"
-        role="list"
-        className={`ui list animating transition slide`}
-      >
-        {this.state.tasks.map((task) => {
-          return(
-            <ListItemRow
-              key={task.id}
-              task={task}
-            />
-          );
-        })}
-      </ReactCSSTransitionGroup>
+      <List>
+        {this.state.tasks.map(task => <ListItemRow key={task.id} task={task} />)}
+      </List>
     );
   }
 }

@@ -3,61 +3,57 @@ import {Header} from 'semantic-ui-react';
 import {Button} from 'semantic-ui-react';
 import {default as TasksActionFactory} from '../actions/TasksActionFactory';
 
-interface ListFooterProps {}
-interface ListFooterState {
+interface IListFooterProps {}
+interface IListFooterState {
   allChecked: boolean;
 }
 
-export default class ListFooter extends React.PureComponent<ListFooterProps, ListFooterState> {
+export default class ListFooter extends React.PureComponent<IListFooterProps, IListFooterState> {
 
-  constructor(props: ListFooterProps) {
+  constructor(props: IListFooterProps) {
     super(props);
-
-    this.state = {
-      allChecked: false,
-    };
-
-    this.checkAllTasks   = this.checkAllTasks.bind(this);
-    this.uncheckAllTasks = this.uncheckAllTasks.bind(this);
-    this.deleteChecked   = this.deleteChecked.bind(this);
-  }
-
-  checkAllTasks(): void {
-    this.setState({allChecked: true});
-    TasksActionFactory.checkAllTasks();
-  }
-
-  uncheckAllTasks(): void {
-    this.setState({allChecked: false});
-    TasksActionFactory.uncheckAllTasks();
-  }
-
-  deleteChecked(): void {
-    this.setState({allChecked: false});
-    TasksActionFactory.deleteCheckedTask();
+    this.state = { allChecked: false };
   }
 
   render() {
+    const {allChecked} = this.state;
+    const content = allChecked ?
+      {text: 'uncheck all', action: this.uncheckAllTasks} :
+      {text: 'check all', action: this.checkAllTasks};
+
     return(
       <div>
         <Header dividing/>
         <Button
           basic
           color="blue"
+          content={content.text}
           size="mini"
-          onClick={this.state.allChecked ? this.uncheckAllTasks : this.checkAllTasks}
-        >
-          {this.state.allChecked ? 'uncheck all' : 'check all'}
-        </Button>
+          onClick={content.action}
+        />
         <Button
           basic
           color="blue"
+          content="delete checked"
           size="mini"
           onClick={this.deleteChecked}
-        >
-          delete checked
-        </Button>
+        />
       </div>
     );
+  }
+
+  private deleteChecked = (): void => {
+    this.setState({allChecked: false});
+    TasksActionFactory.deleteCheckedTask();
+  }
+
+  private uncheckAllTasks = (): void => {
+    this.setState({allChecked: false});
+    TasksActionFactory.uncheckAllTasks();
+  }
+
+  private checkAllTasks = (): void => {
+    this.setState({allChecked: true});
+    TasksActionFactory.checkAllTasks();
   }
 }

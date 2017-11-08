@@ -2,18 +2,22 @@ import * as React from 'react';
 import {Form, Input} from 'semantic-ui-react';
 import {ITask} from '../types/tasks';
 
-interface TaskEditModeProps {
+interface ITaskEditModeProps {
   task: ITask;
   taskValue?: string;
   changeTaskText: (e: React.SyntheticEvent<HTMLInputElement>) => void;
   stopEditingTask: (e: React.SyntheticEvent<HTMLInputElement>, id: string) => void;
 }
-interface TaskEditModeStates {}
 
-export default class TaskEditMode extends React.PureComponent<TaskEditModeProps, TaskEditModeStates> {
+interface ITaskEditModeStates {
+
+}
+
+export default class TaskEditMode extends React.PureComponent<ITaskEditModeProps, ITaskEditModeStates> {
+
   private textInput: HTMLInputElement;
 
-  constructor(props: TaskEditModeProps) {
+  constructor(props: ITaskEditModeProps) {
     super(props);
   }
 
@@ -22,14 +26,14 @@ export default class TaskEditMode extends React.PureComponent<TaskEditModeProps,
   }
 
   render() {
+    const {stopEditingTask, taskValue, changeTaskText} = this.props;
+
     return(
-      <Form
-        onSubmit={this.props.stopEditingTask}
-      >
+      <Form onSubmit={stopEditingTask}>
         <Form.Field>
           <Input
-            value={this.props.taskValue}
-            onChange={this.props.changeTaskText}
+            value={taskValue}
+            onChange={changeTaskText}
             ref={(ref: HTMLInputElement) => this.textInput = ref}
           />
         </Form.Field>

@@ -2,16 +2,16 @@ import * as FluxReduceStore from 'flux/lib/FluxReduceStore';
 import * as Flux from 'flux';
 import AppDispatcher from '../dispatchers/AppDispatcher';
 // import AccessorIDB from './api/AccessorIDB';
-import {DispatcherPayload} from '../types/tasks';
+import {IDispatcherPayload, ITask} from '../types/tasks';
 import {default as TasksActionFactory, TasksActions} from '../actions/TasksActionFactory';
 
-interface TodoStoreState {
+interface ITodoStoreState {
   id:       string;
   text?:    string;
   checked?: boolean;
 }
 
-export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, DispatcherPayload> {
+export default class TodoStore extends FluxReduceStore<Array<ITodoStoreState>, IDispatcherPayload> {
   static _instance: TodoStore;
 
   static getInstance(): TodoStore {
@@ -24,66 +24,75 @@ export default class TodoStore extends FluxReduceStore<Array<TodoStoreState>, Di
     return TodoStore._instance;
   }
 
-  constructor(dispatcher: Flux.Dispatcher<DispatcherPayload>) {
+  constructor(dispatcher: Flux.Dispatcher<IDispatcherPayload>) {
     super(dispatcher);
   }
 
-  getInitialState(): Array<TodoStoreState> {
+  getInitialState(): Array<ITodoStoreState> {
     return [];
   }
 
-  reduce(state: Array<TodoStoreState>, {data, action}: DispatcherPayload): Array<TodoStoreState> {
+  reduce(state: Array<ITodoStoreState>, {data, action}: IDispatcherPayload): Array<ITodoStoreState> {
     switch (action) {
       case TasksActions.addTask:
         return state.concat(data);
 
       case TasksActions.deleteTask:
-        return state.filter((task: TodoStoreState) => task.id !== data.id);
+        return this.deleteTask(data);
 
       case TasksActions.deleteCheckedTask:
-        return state.filter((task) => !task.checked);
+        return this.deleteCheckedTask();
 
       case TasksActions.checkTask:
-        return state.map((task) => {
-          let {text, checked, id} = task;
-
-          if (id === data.id) {
-            return {text, checked: !checked, id};
-          } else {
-            return task;
-          }
-        });
+        return this.checkTask(data);
 
       case TasksActions.checkAllTasks:
-        return state.map((task) => {
-          let {text, checked, id} = task;
-
-          if (checked) {
-            return task;
-          } else {
-            return {text, checked: true, id};
-          }
-        });
+        return this.checkAllTasks();
 
       case TasksActions.unckeckAllTasks:
-        return state.map((task) => {
-          let {text, id} = task;
-          return {text, checked: false, id};
-        });
+        return this.unckeckAllTasks();
 
       case TasksActions.stopEditingTasks:
-        return state.map((task) => {
-          let {checked, id} = task;
-
-          if (id === data.id) {
-            return {text: data.text, checked, id};
-          } else {
-            return task;
-          }
-        });
+        return this.stopEditingTasks(data);
 
       default:
         return state;
     }
+  }
+
+  private deleteTask = (data: ITask): Array<ITodoStoreState> => {
+    return this.getState().filter((task: ITodoStoreState) => task.id !== data.id);
+  }
+
+  private deleteCheckedTask = (): Array<ITodoStoreState> => {
+    return this.getState().filter((task) => !task.checked);
+  }
+
+  private checkTask = (data: ITask): Array<ITodoStoreState> => {
+    return this.getState().map( task => {
+      let {text, checked, id} = task;
+      return id === data.id ? {text, checked: !checked, id} : task;
+    });
+  }
+
+  private checkAllTasks = (): Array<ITodoStoreState> => {
+    return this.getState().map(task => {
+      let {text, checked, id} = task;
+      return checked ? task : {text, checked: true, id};
+    });
+  }
+
+  private unckeckAllTasks = (): Array<ITodoStoreState> => {
+    return this.getState().map((task) => {
+      let {text, id} = task;
+      return {text, checked: false, id};
+    });
+  }
+
+  private stopEditingTasks = (data: ITask): Array<ITodoStoreState> => {
+    return this.getState().map(task => {
+      let {checked, id} = task;
+      return id === data.id ? {text: data.text, checked, id} : task;
+    });
   }
 }
